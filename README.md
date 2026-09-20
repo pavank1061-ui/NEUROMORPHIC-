@@ -56,26 +56,26 @@ Each mode adjusts the cloud threshold and contextual assumptions for the filteri
 
 ```mermaid
 flowchart LR
-    A[Remote Sensor / EO Camera] --> B[Image Acquisition]
-    B --> C[Preprocessing<br/>Resize / Normalize / Pixel Sampling]
-    C --> D[Neuromorphic Edge Processor]
-    D --> E[Feature Extraction<br/>Brightness / Saturation / Edge Density]
-    E --> F{Cloud / Usability Decision}
+    A[Remote Sensor<br/>EO / IR / Camera] --> B[Image Acquisition]
+    B --> C[Preprocessing<br/>Resize / Normalize / Sampling]
+    C --> D[Neuromorphic Edge AI<br/>Event-Driven Inference]
+    D --> E[Feature Analysis<br/>Cloud / Brightness / Texture / Edge Density]
+    E --> F{Decision Engine}
 
-    F -->|KEEP| G[Local Storage Buffer]
-    F -->|REJECT| H[Discard Frame<br/>Save Power + Bandwidth]
+    F -->|KEEP| G[Local Storage<br/>Priority Buffer]
+    F -->|REJECT| H[Discard Frame<br/>No Transmission]
 
-    G --> I[Priority Queue / Downlink Scheduler]
-    I --> J[Ground Station / Mission Control]
-    J --> K[Human Operator / Analytics Pipeline]
+    G --> I[Downlink Scheduler]
+    I --> J[Ground Station<br/>Mission Control]
+    J --> K[Operator / Analytics Layer]
 
-    M[Mission Profile<br/>Army / Navy / Air / Satellite / Rural / Disaster] --> D
-    N[Power Budget / Latency Constraints] --> D
-    O[Image Metadata / Sensor Context] --> E
+    M[Mission Parameters<br/>Army / Navy / Air / Satellite / Rural / Disaster] --> D
+    N[Power & Latency Constraints] --> D
+    O[Sensor Metadata / Context] --> E
 
-    D -. feedback .-> M
+    D -. uses .-> M
     G -->|Useful imagery only| J
-    H -. no transmission .-> J
+    H -. saves bandwidth & energy .-> I
 
     classDef sensor fill:#0ea5e9,stroke:#7dd3fc,color:#ecfeff,stroke-width:1.5px;
     classDef process fill:#14b8a6,stroke:#5eead4,color:#ecfeff,stroke-width:1.5px;
