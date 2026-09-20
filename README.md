@@ -56,26 +56,39 @@ Each mode adjusts the cloud threshold and contextual assumptions for the filteri
 
 ```mermaid
 flowchart LR
-    A[Sensor / Camera] --> B[Image Preprocessing]
-    B --> C[Neuromorphic Edge AI]
-    C --> D{KEEP or REJECT}
-    D -->|KEEP| E[On-Board Storage]
-    D -->|REJECT| F[Discard Cloudy / Unusable Frames]
-    E --> G[Ground Station Downlink]
+    A[Remote Sensor / EO Camera] --> B[Image Acquisition]
+    B --> C[Preprocessing<br/>Resize / Normalize / Pixel Sampling]
+    C --> D[Neuromorphic Edge Processor]
+    D --> E[Feature Extraction<br/>Brightness / Saturation / Edge Density]
+    E --> F{Cloud / Usability Decision}
 
-    H[Mission Profile
-    Army / Navy / Air / Satellite / Rural / Disaster] --> C
-    G --> I[Operator / Decision System]
+    F -->|KEEP| G[Local Storage Buffer]
+    F -->|REJECT| H[Discard Frame<br/>Save Power + Bandwidth]
 
-    classDef sensor fill:#0ea5e9,stroke:#7dd3fc,color:#ecfeff;
-    classDef process fill:#14b8a6,stroke:#5eead4,color:#ecfeff;
-    classDef decision fill:#f59e0b,stroke:#fcd34d,color:#fff7ed;
-    classDef storage fill:#22c55e,stroke:#86efac,color:#f0fdf4;
+    G --> I[Priority Queue / Downlink Scheduler]
+    I --> J[Ground Station / Mission Control]
+    J --> K[Human Operator / Analytics Pipeline]
 
-    class A sensor;
-    class B,C process;
-    class D decision;
-    class E,F,G storage;
+    M[Mission Profile<br/>Army / Navy / Air / Satellite / Rural / Disaster] --> D
+    N[Power Budget / Latency Constraints] --> D
+    O[Image Metadata / Sensor Context] --> E
+
+    D -. feedback .-> M
+    G -->|Useful imagery only| J
+    H -. no transmission .-> J
+
+    classDef sensor fill:#0ea5e9,stroke:#7dd3fc,color:#ecfeff,stroke-width:1.5px;
+    classDef process fill:#14b8a6,stroke:#5eead4,color:#ecfeff,stroke-width:1.5px;
+    classDef decision fill:#f59e0b,stroke:#fcd34d,color:#fff7ed,stroke-width:1.5px;
+    classDef storage fill:#22c55e,stroke:#86efac,color:#f0fdf4,stroke-width:1.5px;
+    classDef output fill:#8b5cf6,stroke:#c4b5fd,color:#f5f3ff,stroke-width:1.5px;
+
+    class A,B sensor;
+    class C,D,E process;
+    class F decision;
+    class G,H,I storage;
+    class J,K output;
+    class M,N,O output;
 ```
 
 ## System Flow
